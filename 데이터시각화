@@ -36,7 +36,7 @@
     <h5>지역코드 안내</h5>
     <h6>11: 서울 / 21: 부산</h6>
     <input id="adm_cd_input" type="int" class="adm_cd_input" placeholder="지역 코드 입력 후 [버블지도]클릭">
-    <button id="addBubble" onclick="addArea('bubble')">버블지도</button>
+	<button id="addArea" onclick="addArea('color')">인구지도</button>
     <button id="clear">지도초기화</button>
     <div id="divCon"></div>
 
