@@ -35,22 +35,22 @@
     <div id="map" style="width:100%-20px;height:480px"></div>
     <h5>지역코드 안내</h5>
     <h6>서울특별시: 11
-부산광역시: 21
-대구광역시: 22
-인천광역시: 23
-광주광역시: 24
-대전광역시: 25
-울산광역시: 26
-세종특별자치시: 29
-경기도: 31
-강원도: 32
-충청북도: 33
-충청남도: 34
-전라북도: 35
-전라남도: 36
-경상북도: 37
-경상남도: 38
-제주특별자치도: 39</h6>
+		부산광역시: 21
+		대구광역시: 22
+		인천광역시: 23
+		광주광역시: 24
+		대전광역시: 25
+		울산광역시: 26
+		세종특별자치시: 29
+		경기도: 31
+		강원도: 32
+		충청북도: 33
+		충청남도: 34
+		전라북도: 35
+		전라남도: 36
+		경상북도: 37
+		경상남도: 38
+		제주특별자치도: 39</h6>
     <input id="adm_cd_input" type="int" class="adm_cd_input" placeholder="지역 코드 입력 후 [버블지도]클릭">
 	<button id="addArea" onclick="addArea('color')">인구지도</button>
     <button id="clear">지도초기화</button>
@@ -75,7 +75,14 @@
         };
 
         map = sop.map("map", mapOptions);
-        map.setView([953427, 1950827], 0);
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var myLat = position.coords.latitude;
+          var myLng = position.coords.longitude;
+
+          // 현재 위치로 지도 초기화
+          map.setView([myLat, myLng], 13);
+        });
 
         function createServiceRequest(reqFunc, reqParam) {
           // access_token 매개변수를 추가
@@ -409,7 +416,7 @@
                         if (result == 1 && min != max) {
                             tmpResult.push(result);
                         } else {
-                            tmpResult.push(parseFloat(parseFloat((min + result * y)).toFixed(2))); //그래서 303 + 57* 
+                            tmpResult.push(parseFloat(parseFloat((min + result * y)).toFixed(2)));
                         }
                     }
                     tmpValPerSlice[k] = tmpResult;
