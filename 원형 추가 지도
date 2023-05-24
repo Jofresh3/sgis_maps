@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>세일즈 맵</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="map" style="height: 900px;"></div>
+    <button onclick="setCircle(1500)">1.5km</button>
+    <button onclick="setCircle(2000)">2km</button>
+    <button onclick="setCircle(3000)">3km</button>
+    <button onclick="clearCircle()">Clear All</button>
+    <script>
+        var map = L.map('map');
+
+        // 현재 위치 가져오기
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            map.setView([lat, lon], 11);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var circles = [];
+
+            function setCircle(radius) {
+                var clickHandler = function (e) {
+                    var lat = e.latlng.lat;
+                    var lon = e.latlng.lng;
+
+                    var centerMarker = L.circleMarker([lat, lon], {
+                        color: 'orange',
+                        radius: 2,
+                        fillOpacity: 1,
+                    }).addTo(map);
+
+                    var circle = L.circle([lat, lon], radius, {
+                        color: 'orange',
+                        opacity: 0.5,
+                    });
+
+                    circle.addTo(map);
+                    circles.push(circle);
+
+                    // ...
+
+                    map.off('click', clickHandler);
+                };
+
+                map.on('click', clickHandler);
+            }
+
+            function clearCircle() {
+                for (var i = 0; i < circles.length; i++) {
+                    var circle = circles[i];
+                    map.removeLayer(circle);
+                }
+                circles = [];
+            }
+        });
+    </script>
+</body>
+</html>
